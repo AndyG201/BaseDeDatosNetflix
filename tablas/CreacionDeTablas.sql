@@ -110,13 +110,10 @@ CREATE TABLE pelicula (
     descripcion TEXT NOT NULL,
     poster VARCHAR(255),
     fecha_estreno DATE,
-    calificacion DOUBLE CHECK (calificacion >= 0 AND calificacion <= 10),
-    popularidad INT CHECK (popularidad >= 0 AND popularidad <= 100),
-    url_pelicula VARCHAR(255)
+    calificacion DOUBLE(3,1) CHECK (calificacion >= 0 AND calificacion <= 10),
+    popularidad INT CHECK (calificacion >= 0 AND calificacion <= 100)
 );
 
-DROP TABLE pelicula;
-DROP TABLE documental;
 -- Creación de la tabla de documentales
 CREATE TABLE documental (
     id_documental INT AUTO_INCREMENT PRIMARY KEY,
@@ -124,9 +121,8 @@ CREATE TABLE documental (
     descripcion TEXT NOT NULL,
     poster VARCHAR(255),
     fecha_estreno DATE,
-    calificacion DOUBLE CHECK (calificacion >= 0 AND calificacion <= 10),
-    popularidad INT CHECK (popularidad >= 0 AND popularidad  <= 100),
-    url_documental VARCHAR(255)
+    calificacion DOUBLE(2,1) CHECK (calificacion >= 0 AND calificacion <= 10),
+    popularidad INT CHECK (calificacion >= 0 AND calificacion <= 100)
 );
 
 -- Relación entre usuarios y películas vistas
@@ -140,55 +136,5 @@ CREATE TABLE usuario_pelicula (
     CONSTRAINT fk_usuario_p 
         FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );
-
-CREATE TABLE genero_pelicula (
-    id_genero INT,
-    id_pelicula INT,
-    PRIMARY KEY (id_genero, id_pelicula),
-    FOREIGN KEY (id_genero) REFERENCES genero(id_genero),
-    FOREIGN KEY (id_pelicula) REFERENCES pelicula(id_pelicula)
-);
-
-CREATE TABLE genero_documental (
-    id_genero INT,
-    id_documental INT,
-    PRIMARY KEY (id_genero, id_documental),
-    FOREIGN KEY (id_genero) REFERENCES genero(id_genero),
-    FOREIGN KEY (id_documental) REFERENCES documental(id_documental)
-);
-
-CREATE TABLE premio (
-    id_premio INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    descripcion TEXT,
-    tipo_premio VARCHAR(50),
-    criterio TEXT,
-    recompensa VARCHAR(100),
-    fecha_inicio DATE,
-    fecha_fin DATE
-);
-
-CREATE TABLE premio_usuario (
-    id_usuario INT NOT NULL,
-    id_premio INT NOT NULL,
-    fecha_otorgado DATE,
-    fecha_reclamado DATE,
-    estado VARCHAR(20) DEFAULT 'Pendiente',
-    PRIMARY KEY (id_usuario, id_premio),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
-    FOREIGN KEY (id_premio) REFERENCES premio(id_premio)
-);
-
-USE databasesi;
-DROP TABLE usuario_pelicula;
-
-
-
-ALTER TABLE pelicula
-ADD COLUMN url_pelicula VARCHAR(255);
-
-ALTER TABLE documental
-ADD COLUMN url_documental VARCHAR(255);
-
 
 
