@@ -26,22 +26,22 @@ SHOW DATABASES;
 SHOW TABLES;
 
 
--- 2️. Creación de usuarios y asignación de privilegios
+-- 2. Creación de usuarios y asignación de privilegios
 -- Cada integrante del equipo obtiene un usuario con privilegios administrativos globales.
 
 -- Usuario: Anderson
 CREATE USER 'anderson'@'%' IDENTIFIED BY 'Bases123+';
-GRANT ALL PRIVILEGES ON *.* TO 'anderson'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON . TO 'anderson'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;  -- Aplica los cambios realizados a los permisos
 
 -- Usuario: Marian
 CREATE USER 'marian'@'%' IDENTIFIED BY 'Bases123+';
-GRANT ALL PRIVILEGES ON *.* TO 'marian'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON . TO 'marian'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 -- Usuario: Federico
 CREATE USER 'federico'@'%' IDENTIFIED BY 'Bases123+';
-GRANT ALL PRIVILEGES ON *.* TO 'federico'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON . TO 'federico'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 
@@ -57,7 +57,7 @@ SELECT VERSION();
 SHOW STATUS LIKE 'Uptime%';
 
 
--- 4️. Limpieza y mantenimiento del servidor
+-- 4. Limpieza y mantenimiento del servidor
 
 -- Refresca los privilegios, registros, hosts y tablas
 FLUSH PRIVILEGES;
@@ -65,6 +65,6 @@ FLUSH LOGS;
 FLUSH HOSTS;
 FLUSH TABLES;
 
--- 5️. Verificación de los usuarios creados
+-- 5. Verificación de los usuarios creados
 -- Lista los usuarios y sus hosts registrados en el sistema
-SELECT User, Host FROM mysql.user;
+SELECT User, Host FROM mysql.user;

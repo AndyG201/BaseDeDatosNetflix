@@ -13,4 +13,8 @@ DELETE FROM pelicula WHERE url_pelicula IS NULL;
 
 -- Se vuelve a activar el modo seguro de MySQL.
 -- Así se evita que en futuras operaciones se eliminen datos por error.
+<<<<<<< HEAD
 SET SQL_SAFE_UPDATES = 1;
+=======
+SET SQL_SAFE_UPDATES = 1;
+>>>>>>> 839c630b92379d8af1d51ceea1619068c0993bd1
