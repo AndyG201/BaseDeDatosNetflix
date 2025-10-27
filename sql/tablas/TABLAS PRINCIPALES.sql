@@ -7,18 +7,23 @@ INTEGRANTES:
     - Federico Medina
 ARCHIVO: creacion_tablas.sql
 DESCRIPCIÓN:
-    Script para la creación de las tablas principales del sistema,
-    incluyendo usuarios, suscripciones, pagos y relaciones asociadas.
+    Script para la creación de las tablas principales y de relaciones
+    del sistema, incluyendo usuarios, suscripciones, pagos, contenido
+    audiovisual y recompensas.
 =============================================================
 */
 
--- Creación de la tabla de estados de cuenta de usuario
+/* ============================================================
+   ============== TABLAS PRINCIPALES DEL SISTEMA ==============
+   ============================================================ */
+
+-- Tabla que almacena los posibles estados de una cuenta de usuario (activo, suspendido, etc.)
 CREATE TABLE estado_cuenta (
     id_estado INT AUTO_INCREMENT PRIMARY KEY,
     nombre_estado VARCHAR(50) NOT NULL
 );
 
--- Creación de la tabla principal de usuarios
+-- Tabla principal de usuarios registrados en el sistema
 CREATE TABLE usuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     primer_nombre VARCHAR(50) NOT NULL,
@@ -33,13 +38,13 @@ CREATE TABLE usuario (
         FOREIGN KEY (id_estado) REFERENCES estado_cuenta(id_estado)
 );
 
--- Tabla de estados de usuario-suscripción
+-- Tabla con los diferentes estados posibles de una suscripción (activa, vencida, cancelada, etc.)
 CREATE TABLE estado_usu_sus (
     id_estado_usu_sus INT AUTO_INCREMENT PRIMARY KEY,
     nombre_estado VARCHAR(50) NOT NULL
 );
 
--- Creación de la tabla suscripción
+-- Tabla principal que define los tipos de suscripciones disponibles
 CREATE TABLE suscripcion (
     id_suscripcion INT AUTO_INCREMENT PRIMARY KEY,
     tipo_suscripcion VARCHAR(50) NOT NULL,
@@ -48,35 +53,19 @@ CREATE TABLE suscripcion (
     descripcion TEXT
 );
 
--- Tabla intermedia que asocia usuarios con sus suscripciones
-CREATE TABLE usuario_suscripcion (
-    id_usuario_suscripcion INT AUTO_INCREMENT PRIMARY KEY,
-    fecha_inicio DATETIME NOT NULL,
-    fecha_fin DATETIME NOT NULL,
-    id_estado_usu_sus INT NOT NULL,
-    id_usuario INT NOT NULL,
-    id_suscripcion INT NOT NULL,
-    CONSTRAINT fk_estado_usu_sus 
-        FOREIGN KEY (id_estado_usu_sus) REFERENCES estado_usu_sus(id_estado_usu_sus),
-    CONSTRAINT fk_usuario 
-        FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
-    CONSTRAINT fk_suscripcion 
-        FOREIGN KEY (id_suscripcion) REFERENCES suscripcion(id_suscripcion)
-);
-
--- Tabla de estados posibles para los pagos
+-- Tabla que almacena los posibles estados de un pago (pendiente, completado, fallido, etc.)
 CREATE TABLE estado_pago (
     id_estado_pago INT AUTO_INCREMENT PRIMARY KEY,
     nombre_estado VARCHAR(50) NOT NULL
 );
 
--- Métodos de pago disponibles
+-- Tabla que define los métodos de pago aceptados (tarjeta, transferencia, etc.)
 CREATE TABLE metodo_pago (
     id_metodo_pago INT AUTO_INCREMENT PRIMARY KEY,
     nombre_metodo VARCHAR(50) NOT NULL
 );
 
--- Tabla principal de pagos
+-- Tabla principal que registra los pagos realizados por los usuarios
 CREATE TABLE pago (
     id_pago INT AUTO_INCREMENT PRIMARY KEY,
     fecha_maxima DATE NOT NULL,
@@ -89,21 +78,20 @@ CREATE TABLE pago (
     CONSTRAINT fk_pago_usuario
         FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
     CONSTRAINT fk_pago_suscripcion 
-		FOREIGN KEY (id_suscripcion) REFERENCES suscripcion(id_suscripcion),
+        FOREIGN KEY (id_suscripcion) REFERENCES suscripcion(id_suscripcion),
     CONSTRAINT fk_pago_estado_pago
-        FOREIGN KEY (id_estado_pago)
-        REFERENCES estado_pago(id_estado_pago),
+        FOREIGN KEY (id_estado_pago) REFERENCES estado_pago(id_estado_pago),
     CONSTRAINT fk_pago_metodo_pago
         FOREIGN KEY (id_metodo_pago) REFERENCES metodo_pago(id_metodo_pago)
 );
 
--- Creación de la tabla genero de las peliculas, documentales y series
+-- Tabla de géneros para películas, documentales y series (Acción, Drama, Comedia, etc.)
 CREATE TABLE genero (
-	id_genero	INT AUTO_INCREMENT PRIMARY KEY,
-    nombre		VARCHAR(30) NOT NULL
+	id_genero INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(30) NOT NULL
 );
 
--- Creación de la tabla de películas
+-- Tabla principal de películas disponibles en la plataforma
 CREATE TABLE pelicula (
     id_pelicula INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(150) NOT NULL,
@@ -115,7 +103,7 @@ CREATE TABLE pelicula (
     url_pelicula VARCHAR(255)
 );
 
--- Creación de la tabla de documentales
+-- Tabla principal de documentales disponibles en la plataforma
 CREATE TABLE documental (
     id_documental INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(150) NOT NULL,
@@ -127,34 +115,43 @@ CREATE TABLE documental (
     url_documental VARCHAR(255)
 );
 
--- Relación entre usuarios y películas vistas
-CREATE TABLE usuario_pelicula (
-    id_usuario_pelicula INT AUTO_INCREMENT PRIMARY KEY,
-    fecha_visualizacion DATETIME NOT NULL,
-    id_pelicula INT NOT NULL,
-    id_usuario INT NOT NULL,
-    CONSTRAINT fk_pelicula 
-        FOREIGN KEY (id_pelicula) REFERENCES pelicula(id_pelicula),
-    CONSTRAINT fk_usuario_p 
-        FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+-- Tabla principal de series
+CREATE TABLE serie (
+    id_serie INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(200) NOT NULL,
+    descripcion TEXT,
+    fecha_estreno DATE,
+    poster VARCHAR(300),
+    calificacion DOUBLE,
+    popularidad INT
 );
 
-CREATE TABLE genero_pelicula (
-    id_genero INT,
-    id_pelicula INT,
-    PRIMARY KEY (id_genero, id_pelicula),
-    FOREIGN KEY (id_genero) REFERENCES genero(id_genero),
-    FOREIGN KEY (id_pelicula) REFERENCES pelicula(id_pelicula)
+-- Tabla de temporadas asociadas a una serie
+CREATE TABLE temporada (
+    id_temporada INT AUTO_INCREMENT PRIMARY KEY,
+    numero_temporada INT NOT NULL,
+    anio_estreno INT,
+    id_serie INT NOT NULL,
+    FOREIGN KEY (id_serie) REFERENCES serie(id_serie)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
-CREATE TABLE genero_documental (
-    id_genero INT,
-    id_documental INT,
-    PRIMARY KEY (id_genero, id_documental),
-    FOREIGN KEY (id_genero) REFERENCES genero(id_genero),
-    FOREIGN KEY (id_documental) REFERENCES documental(id_documental)
+-- Tabla de episodios asociados a cada temporada
+CREATE TABLE episodio (
+    id_episodio INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(200) NOT NULL,
+    numero_episodio INT NOT NULL,
+    descripcion TEXT,
+    poster VARCHAR(300),
+    url_episodio VARCHAR(500),
+    id_temporada INT NOT NULL,
+    FOREIGN KEY (id_temporada) REFERENCES temporada(id_temporada)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
+-- Tabla principal de premios del sistema (reconocimientos o logros)
 CREATE TABLE premio (
     id_premio INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -166,45 +163,3 @@ CREATE TABLE premio (
     fecha_fin DATE
 );
 
-CREATE TABLE premio_usuario (
-    id_usuario INT NOT NULL,
-    id_premio INT NOT NULL,
-    fecha_otorgado DATE,
-    fecha_reclamado DATE,
-    estado VARCHAR(20) DEFAULT 'Pendiente',
-    PRIMARY KEY (id_usuario, id_premio),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
-    FOREIGN KEY (id_premio) REFERENCES premio(id_premio)
-);
-
-CREATE TABLE serie (
-    id_serie INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(200) NOT NULL,
-    descripcion TEXT,
-    fecha_estreno DATE,
-    poster VARCHAR(300),
-    calificacion DOUBLE,
-    popularidad INT
-);
-
-CREATE TABLE temporada (
-    id_temporada INT AUTO_INCREMENT PRIMARY KEY,
-    numero_temporada INT NOT NULL,
-    anio_estreno INT,
-    id_serie INT NOT NULL,
-    FOREIGN KEY (id_serie) REFERENCES serie(id_serie)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
-
-CREATE TABLE episodio (
-    id_episodio INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(200) NOT NULL,
-    numero_episodio INT NOT NULL,
-    descripcion TEXT,
-    poster VARCHAR(300),
-    url_episodio VARCHAR(500),
-    id_temporada INT NOT NULL,
-    FOREIGN KEY (id_temporada) REFERENCES temporada(id_temporada)
-       
-);
