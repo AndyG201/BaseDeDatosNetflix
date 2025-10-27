@@ -7,8 +7,9 @@ INTEGRANTES:
     - Federico Medina
 ARCHIVO: creacion_tablas.sql
 DESCRIPCIÓN:
-    Script para la creación de las tablas relaciones para LAS Tablas principales
-
+   Script que contiene la creación de las tablas de relaciones del sistema.
+    Estas tablas establecen las asociaciones entre las entidades principales
+    del modelo de datos
 /* ============================================================
    ============== TABLAS DE RELACIONES  ==========
    ============================================================ */
