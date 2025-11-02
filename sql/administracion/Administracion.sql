@@ -7,64 +7,88 @@ INTEGRANTES:
     - Federico Medina
 ARCHIVO: administracion.sql
 DESCRIPCIÓN:
-    Este script realiza tareas de administración básicas en MySQL,
-    incluyendo la creación de la base de datos principal del proyecto,
-    la gestión de usuarios y la asignación de privilegios globales.
+    Script de administración avanzado para MySQL:
+    - Creación de la base de datos principal
+    - Creación de usuarios y rol de administración
+    - Asignación de privilegios seguros
+    - Consultas de verificación y mantenimiento
 =============================================================
 */
 
--- 1. Creación de la base de datos principal del proyecto
+-- ==============================================
+-- 1. Creación de la base de datos principal
+-- ==============================================
 CREATE DATABASE databasesi;
 
--- Selecciona la base de datos recién creada para trabajar sobre ella
 USE databasesi;
 
--- Muestra las bases de datos existentes en el servidor
+-- Verificar creación
 SHOW DATABASES;
-
--- Muestra las tablas dentro de la base de datos actual (debería estar vacía al inicio)
 SHOW TABLES;
 
 
--- 2. Creación de usuarios y asignación de privilegios
--- Cada integrante del equipo obtiene un usuario con privilegios administrativos globales.
+-- ==============================================
+-- 2. Creación de rol de administración
+-- ==============================================
+DROP ROLE IF EXISTS admin_global;
+CREATE ROLE admin_global;
 
+-- ==============================================
+-- 3. Creación de usuarios y asignación de privilegios
+-- ==============================================
 -- Usuario: Anderson
 CREATE USER 'anderson'@'%' IDENTIFIED BY 'Bases123+';
-GRANT ALL PRIVILEGES ON . TO 'anderson'@'%' WITH GRANT OPTION;
-FLUSH PRIVILEGES;  -- Aplica los cambios realizados a los permisos
+GRANT ALL PRIVILEGES ON databasesi.* TO 'anderson'@'%' WITH GRANT OPTION;
+GRANT 'admin_global' TO 'anderson'@'%';
 
 -- Usuario: Marian
 CREATE USER 'marian'@'%' IDENTIFIED BY 'Bases123+';
-GRANT ALL PRIVILEGES ON . TO 'marian'@'%' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
+GRANT ALL PRIVILEGES ON databasesi.* TO 'marian'@'%' WITH GRANT OPTION;
+GRANT 'admin_global' TO 'marian'@'%';
 
 -- Usuario: Federico
 CREATE USER 'federico'@'%' IDENTIFIED BY 'Bases123+';
-GRANT ALL PRIVILEGES ON . TO 'federico'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON databasesi.* TO 'federico'@'%' WITH GRANT OPTION;
+GRANT 'admin_global' TO 'federico'@'%';
+
+-- Aplicar cambios
 FLUSH PRIVILEGES;
 
 
--- 3. Consultas administrativas para verificar el entorno del servidor
-
--- Muestra los procesos activos en el servidor MySQL
+-- ==============================================
+-- 4. Verificación básica del servidor y base de datos
+-- ==============================================
+-- Procesos activos
 SHOW PROCESSLIST;
 
--- Muestra la versión actual del servidor MySQL
-SELECT VERSION();
+-- Versión del servidor
+SELECT VERSION() AS 'Versión MySQL';
 
--- Muestra el tiempo que el servidor lleva activo desde el último inicio
+-- Tiempo activo desde último inicio
 SHOW STATUS LIKE 'Uptime%';
 
+-- Usuarios registrados y sus privilegios principales
+SELECT 
+    User,
+    Host,
+    Select_priv,
+    Insert_priv,
+    Update_priv,
+    Delete_priv,
+    Create_priv,
+    Drop_priv,
+    Grant_priv
+FROM mysql.user;
 
--- 4. Limpieza y mantenimiento del servidor
 
--- Refresca los privilegios, registros, hosts y tablas
+-- ==============================================
+-- 5. Limpieza y mantenimiento del servidor
+-- ==============================================
 FLUSH PRIVILEGES;
 FLUSH LOGS;
 FLUSH HOSTS;
 FLUSH TABLES;
 
--- 5. Verificación de los usuarios creados
--- Lista los usuarios y sus hosts registrados en el sistema
-SELECT User, Host FROM mysql.user;
+-- Mostrar advertencias y errores recientes
+SHOW WARNINGS;
+SHOW ERRORS;

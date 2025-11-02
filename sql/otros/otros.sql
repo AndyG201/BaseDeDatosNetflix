@@ -1,17 +1,36 @@
--- Se desactiva temporalmente el modo seguro de MySQL.
--- Esto permite realizar eliminaciones sin necesidad de usar una clave primaria o un límite.
--- Es útil cuando se necesita limpiar datos específicos sin restricciones.
+-- ===========================================
+-- SCRIPT DE LIMPIEZA DE DATOS INCOMPLETOS
+-- Archivo: otros.sql
+-- Base de datos: databasesi
+-- Descripción: Elimina registros sin URL en documental y película,
+--              y muestra información general del esquema.
+-- ===========================================
+
+-- 1. Desactivar el modo seguro de MySQL
 SET SQL_SAFE_UPDATES = 0;
 
--- Se eliminan los documentales que no tienen una URL registrada.
--- De esta forma, solo permanecen en la base de datos los documentales con información completa.
-DELETE FROM documental WHERE url_documental IS NULL;
+-- 2. Mostrar cuántos documentales no tienen URL antes de eliminar
+SELECT COUNT(*) AS total_documentales_sin_url
+FROM documental
+WHERE url_documental IS NULL;
 
--- Se eliminan las películas que no tienen una URL registrada.
--- Esto ayuda a mantener la base de datos limpia y evitar registros incompletos.
-DELETE FROM pelicula WHERE url_pelicula IS NULL;
+-- 3. Eliminar los documentales sin URL registrada
+DELETE FROM documental
+WHERE url_documental IS NULL;
 
--- Se vuelve a activar el modo seguro de MySQL.
--- Así se evita que en futuras operaciones se eliminen datos por error.
+-- 4. Mostrar cuántas películas no tienen URL antes de eliminar
+SELECT COUNT(*) AS total_peliculas_sin_url
+FROM pelicula
+WHERE url_pelicula IS NULL;
+
+-- 5. Eliminar las películas sin URL registrada
+DELETE FROM pelicula
+WHERE url_pelicula IS NULL;
+
+-- 6. Reactivar el modo seguro de MySQL
 SET SQL_SAFE_UPDATES = 1;
 
+-- 7. Mostrar cuántas tablas existen en el esquema
+SELECT COUNT(*) AS total_tablas
+FROM information_schema.tables
+WHERE table_schema = 'databasesi';
