@@ -1,4 +1,4 @@
-# Proyecto: Sistema de Gestión de Contenidos Streaming
+# Proyecto: BASEFLIX91
 
 ## Descripción
 Proyecto académico desarrollado para la asignatura **Bases de Datos I**, que simula una plataforma de streaming similar a **Netflix**.  
