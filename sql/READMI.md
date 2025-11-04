@@ -23,7 +23,8 @@ El objetivo principal es comprender el ciclo de vida del diseño de una base de 
 | `creacion_tablas_relaciones.sql` | Define las **relaciones entre tablas** mediante claves foráneas y restricciones. |
 | `inserciones.sql` | Inserta los **datos iniciales** del sistema (suscripciones, estados, métodos de pago, premios, etc.). |
 | `otros.sql` | Incluye **consultas adicionales**, validaciones y scripts de limpieza o mantenimiento. |
-| `consultas_avanzadas.sql` | Contiene ejemplos de consultas con `JOIN`, `GROUP BY`, `HAVING` y subconsultas para análisis de datos. |
+| `consultas_eventos_premios.sql` | Contiene **consultas y eventos programados** relacionados con el otorgamiento automático de premios, cálculo de fidelidad y actualización de estados de usuario. |
+
 
 ---
 
