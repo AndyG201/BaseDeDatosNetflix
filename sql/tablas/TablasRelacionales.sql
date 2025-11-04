@@ -77,8 +77,6 @@ CREATE TABLE premio_usuario (
     id_usuario             INT NOT NULL,
     id_premio              INT NOT NULL,
     fecha_otorgado         DATE,
-    fecha_reclamado        DATE,
-    estado                 VARCHAR(20) DEFAULT 'Pendiente',
     PRIMARY KEY (id_usuario, id_premio),
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
     FOREIGN KEY (id_premio) REFERENCES premio(id_premio)

@@ -159,6 +159,11 @@ CREATE TABLE premio (
     tipo_premio      VARCHAR(50),
     criterio         TEXT,
     recompensa       VARCHAR(100),
-    fecha_inicio     DATE,
-    fecha_fin        DATE
+    puntos_requeridos	INT DEFAULT 0
+);
+
+CREATE TABLE puntos_usuario(
+	id_usuario		INT PRIMARY KEY,
+    puntos_totales	INT DEFAULT 0,
+    ultima_actualizacion 	DATETIME
 );

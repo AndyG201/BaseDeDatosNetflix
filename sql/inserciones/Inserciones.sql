@@ -49,3 +49,37 @@ VALUES
 ('Daviplata'),
 ('Efectivo');
 
+-- 🏆 Premio 1: 20 días extra de suscripción
+INSERT INTO premio (nombre, descripcion, tipo_premio, criterio, recompensa, puntos_requeridos)
+VALUES (
+  '20 días extra de suscripción',
+  'El usuario obtiene 20 días adicionales de su plan actual al canjear este premio.',
+  'Suscripción',
+  'Acumular puntos mediante visualizaciones de contenido.',
+  'Extensión de 20 días en la suscripción',
+  50
+);
+
+-- 🎁 Premio 2: Descuento del 30% en la próxima suscripción
+INSERT INTO premio (nombre, descripcion, tipo_premio, criterio, recompensa, puntos_requeridos)
+VALUES (
+  'Descuento del 30% en suscripción',
+  'Permite al usuario obtener un descuento del 30% en su próxima renovación de plan.',
+  'Descuento',
+  'Acumular puntos por visualizaciones y pagos puntuales.',
+  '30% de descuento en la próxima suscripción',
+  100
+);
+
+-- 🍿 Premio 3: Acceso anticipado a contenido exclusivo
+INSERT INTO premio (nombre, descripcion, tipo_premio, criterio, recompensa, puntos_requeridos)
+VALUES (
+  'Acceso a contenido exclusivo',
+  'Otorga acceso a películas o series exclusivas durante 7 días antes del lanzamiento general.',
+  'Contenido especial',
+  'Acumular puntos por interacción frecuente con la plataforma.',
+  'Acceso anticipado a estrenos',
+  150
+);
+
+
