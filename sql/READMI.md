@@ -1,106 +1,64 @@
-\# Proyecto: Sistema de Gestión de Contenidos Streaming
+# Proyecto: Sistema de Gestión de Contenidos Streaming
 
+## Descripción
+Proyecto académico desarrollado para la asignatura **Bases de Datos I**, que simula una plataforma de streaming similar a **Netflix**.  
+Permite gestionar **usuarios, suscripciones, pagos, géneros, series, películas y premios por fidelidad**, integrando todos los componentes de un sistema real de administración de contenido.
 
+El sistema está diseñado bajo principios de **normalización hasta la Tercera Forma Normal (3FN)** y sigue buenas prácticas de **modelado relacional**, asegurando integridad referencial, consistencia de datos y escalabilidad.  
+El objetivo principal es comprender el ciclo de vida del diseño de una base de datos relacional, desde el **modelo conceptual (ER)** hasta su **implementación en SQL**.
 
-\## Descripción
+---
 
-Proyecto académico para la asignatura \*\*Bases de Datos I\*\*, que simula una plataforma de streaming tipo Netflix.  
+## Integrantes
+- **Anderson Gamba**  
+- **Marian Castaño**  
+- **Federico Medina**
 
-Permite gestionar usuarios, suscripciones, pagos, géneros y premios por fidelidad.
+---
 
-
-
-El sistema está diseñado bajo principios de \*\*normalización (hasta 3FN)\*\* y sigue buenas prácticas de modelado relacional.
-
-
-
-\## Integrantes
-
-\- Anderson Gamba  
-
-\- Marian Castaño  
-
-\- Federico Medina  
-
-
-
-\## Archivos Principales
-
+## Archivos Principales
 | Archivo | Descripción |
-
 |----------|-------------|
+| `creacion_tablas.sql` | Contiene las sentencias `CREATE TABLE` que crean las entidades principales del sistema. |
+| `creacion_tablas_relaciones.sql` | Define las **relaciones entre tablas** mediante claves foráneas y restricciones. |
+| `inserciones.sql` | Inserta los **datos iniciales** del sistema (suscripciones, estados, métodos de pago, premios, etc.). |
+| `otros.sql` | Incluye **consultas adicionales**, validaciones y scripts de limpieza o mantenimiento. |
+| `consultas_avanzadas.sql` | Contiene ejemplos de consultas con `JOIN`, `GROUP BY`, `HAVING` y subconsultas para análisis de datos. |
 
-| `creacion\_tablas.sql` | Crea las tablas principales del sistema. |
+---
 
-| `creacion\_tablas\_relaciones.sql` | Define las relaciones entre entidades. |
+## Base de Datos
+- **Nombre del esquema:** `databasesi`  
+- **Motor:** MySQL  
+- **Versión recomendada:** 8.0 o superior  
+- **Lenguaje SQL estándar:** ANSI SQL  
 
-| `inserciones.sql` | Inserta los datos iniciales (suscripciones, estados, métodos de pago, premios). |
+Este diseño está enfocado en mantener una estructura limpia y coherente, con un manejo adecuado de las dependencias funcionales entre entidades.  
+Las relaciones entre entidades se modelaron para reflejar correctamente los escenarios del sistema de streaming, como usuarios con múltiples suscripciones o pagos asociados a diferentes métodos.
 
-| `otros.sql` | Limpieza de registros incompletos y consultas del esquema. |
+---
 
+## Modelo Lógico y Conceptual
+El sistema cuenta con las siguientes entidades principales:
+- **Usuario:** información básica, correo, teléfono, contraseña y estado de cuenta.  
+- **Suscripción:** tipos de plan (básico, estándar, premium), duración y costo.  
+- **Pago:** registro de pagos con monto, fecha, método y relación con el usuario.  
+- **Premio:** incentivos o bonificaciones por fidelidad.  
+- **Género:** clasificación temática de los contenidos disponibles.  
 
+Cada entidad fue normalizada para evitar redundancia y asegurar la integridad de los datos.  
+Las relaciones están definidas mediante **claves foráneas** y **restricciones ON DELETE / ON UPDATE**, garantizando la consistencia referencial del modelo.
 
-\## Base de Datos
+---
 
-\- \*\*Nombre del esquema:\*\* `databasesi`
+## Tecnologías Utilizadas
+| Tecnología | Propósito |
+|-------------|------------|
+| **MySQL 8.0** | Motor de base de datos relacional. |
+| **Workbench / DBeaver** | Herramientas para la administración visual del esquema. |
+| **SQL ANSI** | Lenguaje de definición y manipulación de datos. |
+| **Git / GitHub** | Control de versiones y documentación del proyecto. |
 
-\- \*\*Motor:\*\* MySQL
+---
 
-\- \*\*Versión recomendada:\*\* 8.0 o superior
-
-
-
-El diseño busca garantizar la integridad referencial y la eficiencia en las consultas más comunes del sistema.
-
-
-
-\## Instrucciones de uso
-
-1\. Ejecuta los scripts en este orden:
-
-&nbsp;  1. `creacion\_tablas.sql`
-
-&nbsp;  2. `creacion\_tablas\_relaciones.sql`
-
-&nbsp;  3. `inserciones.sql`
-
-&nbsp;  4. `otros.sql` \*(opcional, para limpieza)\*
-
-
-
-2\. Comprueba las tablas creadas:
-
-&nbsp;  ```sql
-
-&nbsp;  SHOW TABLES;
-
-&nbsp;  ```
-
-
-
-3\. Explora los datos insertados:
-
-&nbsp;  ```sql
-
-&nbsp;  SELECT \* FROM usuario;
-
-&nbsp;  SELECT \* FROM suscripcion;
-
-&nbsp;  SELECT \* FROM pago;
-
-&nbsp;  ```
-
-
-
-\## Consideraciones Técnicas
-
-\- Las claves primarias y foráneas se implementan según las dependencias funcionales establecidas en el modelo lógico.  
-
-\- Se aplicaron restricciones \*\*NOT NULL\*\*, \*\*UNIQUE\*\* y \*\*CHECK\*\* donde corresponde.  
-
-\- Las relaciones están diseñadas bajo un enfoque \*\*uno a muchos\*\* y \*\*muchos a muchos\*\* cuando es necesario.  
-
-\- Se recomienda ejecutar los scripts desde \*\*MySQL Workbench\*\* o \*\*DBeaver\*\* para una correcta visualización y gestión del esquema.
-
-
-
+## Estructura del Proyecto
